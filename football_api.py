@@ -65,15 +65,45 @@ def display_user_data(data):
         print(item[0],"\t", item[1],"\t", item[2],"\t", item[3],"\t", item[4],"\t", item[5],"\t", item[6],"\t", item[7],"\t", item[8],"\t", item[9])
 
 
+def create_db_file(data):
+    pass
+
+def create_csv_file(data):
+    pass
+
+def create_json_file(data):
+    file_name = input("Input file name: ")
+    with open(f'{str(file_name)}.json', "w") as f:
+        json_data = json.dump(data, f, indent=2)
+        print(json_data)
+
+
 if __name__ == "__main__":
     print("This app present league tables from few leagues in last years")
     print("Available leagues: ")
     display_all_leagues()
-    
-    user_id = input("Enter league ID: ")
-    user_season = input("Enter a season (year):")
-    
-    table = league_data('ita.1', 2020)
-    display_user_data(table)
+    while True:
+        user_id = input("Enter league ID: ")
+        user_season = input("Enter a season (year):")
+        
+        table = league_data(user_id, user_season)
+        if table:
+            display_user_data(table)
+            file_eksport = input("Export data to CSV or DB file? (input: CSV/DB/JSON/EXIT): ")
+            if file_eksport.upper == "CSV":
+                create_csv_file(table)
+            elif file_eksport == "DB":
+                create_db_file(table)
+            elif file_eksport == "JSON":
+                create_json_file(table)
+            elif file_eksport == "EXIT":
+                pass
+            else:
+                print("Input error, try again")
+            
+            break
+        else:
+            print("Input error or API connection error, try again")
+            continue
     
 
